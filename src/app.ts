@@ -4,6 +4,7 @@ import cors from "cors";
 
 // IMPORT ROUTES
 import { signinRouter } from "./Auth/routes/signin";
+import { signupRouter } from "./Auth/routes/signup";
 
 
 const app = express();
@@ -27,6 +28,7 @@ app.use(
 
 // USE ROUTES
 app.use(signinRouter);
+app.use(signupRouter);
 
 
 //We have installed a library to workaround the default pattern that
