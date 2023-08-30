@@ -2,10 +2,9 @@ import express from "express";
 import { json } from "body-parser";
 import cors from "cors";
 
-// IMPORT ROUTES
+// Importing routes
 import { signinRouter } from "./Auth/routes/signin";
 import { signupRouter } from "./Auth/routes/signup";
-
 
 const app = express();
 
@@ -15,6 +14,7 @@ app.use(json());
 // Errors with credentials and CORS, refer to
 // https://stackoverflow.com/questions/14003332/access-control-allow-origin-wildcard-subdomains-ports-and-protocols
 // https://stackoverflow.com/questions/8074665/cross-origin-resource-sharing-with-credentials
+
 app.use(
   cors({
     methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
@@ -26,7 +26,7 @@ app.use(
   }),
 );
 
-// USE ROUTES
+// Use routes
 app.use(signinRouter);
 app.use(signupRouter);
 
