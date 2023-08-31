@@ -13,6 +13,7 @@ router.post(
         body('password')
             .trim()
             .isStrongPassword({ minLength: 8, minUppercase: 1, minNumbers: 1, minSymbols: 1 })
+   signin-expressvalidator
             .withMessage('Password must have at least eight characters being at least one uppercase, one number and one special character'),
         body('birthDate')
             .isISO8601()
@@ -36,3 +37,4 @@ router.post(
 );
 
 export { router as signupRouter };
+
