@@ -1,24 +1,25 @@
 import { app } from './app';
 import 'dotenv/config';
-const { Client } = require('pg');
-// const dbConfig = require("../config/db-config.js")
+import { Pool, QueryResult } from 'pg';
 
 require('dotenv').config();
 
-const client = new Client({
+//developer's information to create the connection to database
+const pool: Pool = new Pool({
     user: process.env.RDS_USER,
     host: process.env.RDS_HOST,
     database: process.env.RDS_DATABASE,
     password: process.env.RDS_PASSWORD,
-    port: process.env.RDS_PORT
+    port: parseInt(process.env.RDS_PORT || "0")
 })
+export { pool }
+
 
 const start = async () => {
     try{    
-        await client.connect()  
-        console.log("Connected to PostgresDB")
-        console.log(process.env.RDS_USER)
-        app.listen(5432, () => {
+        console.log("Connected to PostgresDB");
+
+        app.listen(3000, () => {
             console.log('Listening on port 3000!');
         });
     } catch (error){
