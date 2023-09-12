@@ -40,11 +40,11 @@ class NewUser{
         return true;
     }
 
-    public async create(email: string, password: string, birthDate: string, firstName: string, lastName: string){
+    public async create(email: string, password: string, birth_date: string, first_name: string, last_name: string){
         const user_id = uuid4();
         const hashedPassword = await Password.toHash(password);
         const response = await this.newQuery(`INSERT INTO user_info (user_id, email, birthdate, first_name, last_name, password)
-                                                VALUES ('${user_id}', '${email}', '${birthDate}', '${firstName}', '${lastName}', '${hashedPassword}')`);
+                                                VALUES ('${user_id}', '${email}', '${birth_date}', '${first_name}', '${last_name}', '${hashedPassword}')`);
 
         
         if(response.rowCount == 0){

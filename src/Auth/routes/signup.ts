@@ -20,22 +20,22 @@ router.post(
       .withMessage(
         "Password must have at least eight characters being at least one uppercase, one number and one special character",
       ),
-    body("birthDate")
+    body("birth_date")
       .isISO8601()
       .notEmpty()
       .withMessage("You must supply a correct birth date"),
-    body("firstName")
+    body("first_name")
       .matches("^[A-Za-zãáâéêíôõóú.\'\-\\s]+$")
       .notEmpty()
       .withMessage("You must supply a correct name"),
-    body("lastName")
+    body("last_name")
       .matches("^[A-Za-zãáâéêíôõóú.\'\-\\s]+$")
       .notEmpty()
       .withMessage("You must supply a correct last name"),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { email, password, birthDate, firstName, lastName } = req.body;
+    const { email, password, birth_date, first_name, last_name } = req.body;
     let user = new NewUser();
 
     await user.initialize();
@@ -47,10 +47,10 @@ router.post(
         return;
     }
 
-    await user.create(email, password, birthDate, firstName, lastName);
+    await user.create(email, password, birth_date, first_name, last_name);
     user.close();
 
-    res.status(200).send({ email, password, birthDate, firstName, lastName });
+    res.status(200).send({ email, password, birth_date, first_name, last_name });
   },
 );
 
