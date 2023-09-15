@@ -5,6 +5,7 @@ import cors from "cors";
 // Importing routes
 import { signinRouter } from "./Auth/routes/signin";
 import { signupRouter } from "./Auth/routes/signup";
+import { newCaixinhaRouter } from "./Caixinha/routes/newCaixinha";
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(
 // Use routes
 app.use(signinRouter);
 app.use(signupRouter);
+app.use(newCaixinhaRouter);
 
 
 //We have installed a library to workaround the default pattern that
