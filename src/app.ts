@@ -8,6 +8,7 @@ import { signupRouter } from "./Auth/routes/signup";
 import { errorHandler } from './common/middlewares/error-handler';
 import { NotFoundError } from './common/errors/not-found-error';
 
+
 const app = express();
 
 app.set("trust proxy", true);
@@ -31,6 +32,7 @@ app.use(
 // Use routes
 app.use(signinRouter);
 app.use(signupRouter);
+app.use(newCaixinhaRouter);
 
 
 //We have installed a library to workaround the default pattern that
