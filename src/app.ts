@@ -5,7 +5,9 @@ import cors from "cors";
 // Importing routes
 import { signinRouter } from "./Auth/routes/signin";
 import { signupRouter } from "./Auth/routes/signup";
-import { newCaixinhaRouter } from "./Caixinha/routes/newCaixinha";
+import { errorHandler } from './common/middlewares/error-handler';
+import { NotFoundError } from './common/errors/not-found-error';
+
 
 const app = express();
 
@@ -35,10 +37,11 @@ app.use(newCaixinhaRouter);
 
 //We have installed a library to workaround the default pattern that
 //JS deals with throw and async communication
-// app.all('*', async (req, res) => {
-//     throw new NotFoundError();
-// });
+app.all('*', async (req, res) => {
+    throw new NotFoundError();
+});
 
-// app.use(errorHandler);
+
+app.use(errorHandler);
 
 export { app };
