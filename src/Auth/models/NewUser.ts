@@ -2,6 +2,7 @@ import { pool } from "../../index"
 import { PoolClient } from 'pg';
 import { v4 as uuid4 } from 'uuid';
 import { Password } from "../services/password";
+import { InternalServerError } from "../../common/errors/internal-server-error";
 
 class NewUser{
     client: PoolClient;
@@ -48,7 +49,7 @@ class NewUser{
 
         
         if(response.rowCount == 0){
-            //erro com o banco - inseriu nada ;-;
+            throw new InternalServerError('Something went wrong');
         }
     }
     
