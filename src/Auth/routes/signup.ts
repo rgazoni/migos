@@ -1,7 +1,9 @@
 import express, { Response, Request } from 'express';
-import { NewUser } from '../models/NewUser';
+import { Signup } from '../models/Signup';
 import { body } from 'express-validator';
 import { validateRequest } from '../middlewares/validate-request';
+import { RequestValidationError } from '../../common/errors/request-validation-error';
+import { ValidationError } from 'sequelize';
 
 const router = express.Router();
 
@@ -36,13 +38,13 @@ router.post(
   validateRequest,
   async (req: Request, res: Response) => {
     const { email, password, birth_date, first_name, last_name } = req.body;
-    let user = new NewUser();
+    let user = new Signup();
 
     await user.initialize();
 
     if(await user.exists(email)){
         //retornar errode usuario ja existente
-        console.log("ja existe ;-;");
+        // const error = new RequestValidationError(validateRequest.arguments);
         res.status(404).send("ja existe ;-;");
         return;
     }

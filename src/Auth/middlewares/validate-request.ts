@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
+import { RequestValidationError } from "../../common/errors/request-validation-error";
 
 export const validateRequest = (
     req: Request,
@@ -8,12 +9,8 @@ export const validateRequest = (
 ) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        res.status(400).send({
-            errors: [
-                { msg: 'Email ou senha invalidos' },
-                ...errors.array()
-            ]
-        });
+        throw new RequestValidationError(errors.array());
+        
     } else {
         next();
     }

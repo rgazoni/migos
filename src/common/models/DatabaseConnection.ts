@@ -1,7 +1,7 @@
 import { pool } from "../../index"
 import { PoolClient } from 'pg';
 
-class UserAuth{
+class DatabaseConnection{
     client: PoolClient;
 
     public async initialize(){         
@@ -26,10 +26,10 @@ class UserAuth{
         //create a query and returns all rows
         this.checkClient()
         const res = await this.client.query(query)
-        return res.rows;
+        return res;
     }
     
 
 }
 
-export { UserAuth };
+export { DatabaseConnection };
