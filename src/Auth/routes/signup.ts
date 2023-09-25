@@ -26,11 +26,11 @@ router.post(
       .notEmpty()
       .withMessage("You must supply a correct birth date"),
     body("first_name")
-      .matches("^[A-Za-zãáâéêíôõóú.'-\\s]+$")
+      .matches("^[A-Za-zãáâéêíôõóú.\'\-\\s]+$")
       .notEmpty()
       .withMessage("You must supply a correct name"),
     body("last_name")
-      .matches("^[A-Za-zãáâéêíôõóú.'-\\s]+$")
+      .matches("^[A-Za-zãáâéêíôõóú.\'\-\\s]+$")
       .notEmpty()
       .withMessage("You must supply a correct last name"),
   ],
