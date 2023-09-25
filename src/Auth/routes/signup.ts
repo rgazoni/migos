@@ -1,8 +1,8 @@
-import express, { Response, Request } from "express";
-import { NewUser } from "../models/NewUser";
-import { body } from "express-validator";
-import { validateRequest } from "../middlewares/validate-request";
-import { BadRequestError } from "../../common/errors/bad-request-error";
+import express, { Response, Request } from 'express';
+import { Signup } from '../models/Signup';
+import { body } from 'express-validator';
+import { validateRequest } from '../middlewares/validate-request';
+import { BadRequestError } from '../../common/errors/bad-request-error';
 
 const router = express.Router();
 
@@ -37,7 +37,7 @@ router.post(
   validateRequest,
   async (req: Request, res: Response) => {
     const { email, password, birth_date, first_name, last_name } = req.body;
-    let user = new NewUser();
+    let user = new Signup();
 
     await user.initialize();
 
