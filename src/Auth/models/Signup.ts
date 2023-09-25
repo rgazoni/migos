@@ -1,5 +1,6 @@
 import { v4 as uuid4 } from 'uuid';
 import { Password } from "../services/password";
+import { InternalServerError } from "../../common/errors/internal-server-error";
 import { DatabaseConnection } from "../../common/models/DatabaseConnection"
 
 class Signup extends DatabaseConnection{
@@ -19,7 +20,7 @@ class Signup extends DatabaseConnection{
                                                 VALUES ('${user_id}', '${email}', '${birth_date}', '${first_name}', '${last_name}', '${hashedPassword}')`);
 
         if(response.rowCount == 0){
-            //erro com o banco - inseriu nada ;-;
+            throw new InternalServerError('Something went wrong');
         }
     }
 }

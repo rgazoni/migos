@@ -6,6 +6,7 @@ import cors from "cors";
 // Importing routes
 import { signinRouter } from "./Auth/routes/signin";
 import { signupRouter } from "./Auth/routes/signup";
+import { newCaixinhaRouter } from "./Caixinha/routes/newCaixinha";
 import { errorHandler } from './common/middlewares/error-handler';
 import { NotFoundError } from './common/errors/not-found-error';
 
