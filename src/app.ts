@@ -1,3 +1,4 @@
+require("express-async-errors");
 import express from "express";
 import { json } from "body-parser";
 import cors from "cors";
@@ -32,7 +33,7 @@ app.use(
 // Use routes
 app.use(signinRouter);
 app.use(signupRouter);
-app.use(newCaixinhaRouter);
+// app.use(newCaixinhaRouter);
 
 
 //We have installed a library to workaround the default pattern that
