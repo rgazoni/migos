@@ -5,6 +5,7 @@ import { Password } from "../services/password";
 
 class NewUser{
     client: PoolClient;
+    userID: string;
 
     public async initialize(){         
         //connect a pool with one client 
@@ -46,7 +47,7 @@ class NewUser{
         const response = await this.newQuery(`INSERT INTO user_info (user_id, email, birthdate, first_name, last_name, password)
                                                 VALUES ('${user_id}', '${email}', '${birth_date}', '${first_name}', '${last_name}', '${hashedPassword}')`);
 
-        
+        this.userID = user_id; //armazenando o id do usuario para utilizar nas caixinhas
         if(response.rowCount == 0){
             //erro com o banco - inseriu nada ;-;
         }

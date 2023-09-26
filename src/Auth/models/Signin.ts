@@ -3,7 +3,7 @@ import { PoolClient } from 'pg';
 import { v4 as uuid4 } from 'uuid';
 import { Password } from "../services/password";
 
-class VerifyUser{
+class Signin{
     client: PoolClient;
 
     public async initialize(){         
@@ -31,7 +31,7 @@ class VerifyUser{
         return res;
     }
     
-    public async verifySignin(email: string, password: string){
+    public async signin(email: string, password: string){
         const user = await this.newQuery(`SELECT * FROM user_info WHERE email = '${email}'`);
         if(user.rows.length > 0){
             const password_db = user.rows[0].password;
@@ -49,4 +49,4 @@ class VerifyUser{
         }
     }     
 }
-export { VerifyUser };
+export { Signin };

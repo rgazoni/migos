@@ -1,6 +1,6 @@
 import express, { Response, Request } from 'express';
 //import { UserAuth } from '../models/UserAuth';
-import { VerifyUser } from '../models/VerifyUser';
+import { Signin } from '../models/Signin';
 import { body } from 'express-validator';
 import { validateRequest } from '../middlewares/validate-request';
 
@@ -22,18 +22,11 @@ router.post(
         const { email, password } = req.body;
 
         //create a new connection to AWS RDS using an UserAuth class
-        //let auth = new UserAuth(); 
-        let user = new VerifyUser();
+        let user = new Signin();
         //create a new connection, requires a new query and close 
-        //await auth.initialize();
         await user.initialize();
 
-        
-        
-        //const existingUser = await auth.newQuery(`SELECT password FROM user_info WHERE email = '${email}'`);
-        //auth.close();
-
-        const existingUser = await user.verifySignin(email,password); //await user.newQuery(`SELECT password FROM user_info WHERE email = '${email}'`);
+        const existingUser = await user.signin(email,password); 
         user.close();
         
         //if the query was successfully done, then send it to postman
