@@ -22,11 +22,12 @@ router.post(
         const { email, password } = req.body;
 
         //create a new connection to AWS RDS using an UserAuth class
+        //let auth = new UserAuth(); 
         let user = new Signin();
         //create a new connection, requires a new query and close 
         await user.initialize();
 
-        const existingUser = await user.signin(email,password); 
+        const existingUser = await user.verifySignin(email,password); //await user.newQuery(`SELECT password FROM user_info WHERE email = '${email}'`);
         user.close();
         
         //if the query was successfully done, then send it to postman
