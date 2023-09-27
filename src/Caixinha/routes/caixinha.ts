@@ -48,7 +48,12 @@ router.post(
         await caixinha.createCaixinha(caixinha_name, tag, default_amount, user_ID);
         caixinha.close();
 
-        res.status(200).send({ caixinha_name, tag, default_amount });
+        res.status(200).json({ 
+            message: "Caixinha adicionada com sucesso",
+            caixinha_name,
+            tag,
+            default_amount
+          });
     },
 
 );
