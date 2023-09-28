@@ -6,15 +6,9 @@ import { validateRequest } from '../../Auth/middlewares/validate-request';
 const router = express.Router();
 
 router.get(
-    '/api/users/caixinha',
-    [
-        body('user_id')
-            .notEmpty()
-    ],
-    validateRequest,
-
+    '/api/users/caixinha/:user_id',
     async (req: Request, res: Response) => {
-        const { user_id } = req.body; 
+        const user_id = req.params.user_id;
         const caixinhas = new NewCaixinha();
     
         await caixinhas.initialize();
@@ -26,6 +20,8 @@ router.get(
 router.post(
     '/api/users/caixinha',
     [
+        body('user_id')
+            .notEmpty(),
         body('caixinha_name')
             .notEmpty()
             .withMessage("Tag must be valid"),
@@ -40,12 +36,11 @@ router.post(
     validateRequest,
 
     async (req: Request, res: Response) => {
-        const { caixinha_name, tag, default_amount } = req.body;
+        const { user_id, caixinha_name, tag, default_amount } = req.body;
         const caixinha = new NewCaixinha();
 
         await caixinha.initialize();
-        const user_ID = '123'
-        await caixinha.createCaixinha(caixinha_name, tag, default_amount, user_ID);
+        await caixinha.createCaixinha(caixinha_name, tag, default_amount, user_id);
         caixinha.close();
 
         res.status(200).send({ caixinha_name, tag, default_amount });
