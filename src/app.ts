@@ -9,7 +9,7 @@ import { signupRouter } from "./Auth/routes/signup";
 import { caixinhaRouter } from "./Caixinha/routes/caixinha";
 import { errorHandler } from './common/middlewares/error-handler';
 import { NotFoundError } from './common/errors/not-found-error';
-
+import { fetch_statements_router } from "./Caixinha/routes/fetch_statements";
 
 const app = express();
 
@@ -35,6 +35,7 @@ app.use(
 app.use(signinRouter);
 app.use(signupRouter);
 app.use(caixinhaRouter);
+app.use(fetch_statements_router);
 
 
 //We have installed a library to workaround the default pattern that
