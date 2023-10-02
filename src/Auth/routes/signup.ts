@@ -1,6 +1,8 @@
-import express, { Response, Request } from "express";
-import { body } from "express-validator";
-import { validateRequest } from "../middlewares/validate-request";
+import express, { Response, Request } from 'express';
+import { Signup } from '../models/Signup';
+import { body } from 'express-validator';
+import { validateRequest } from '../middlewares/validate-request';
+import { BadRequestError } from '../../common/errors/bad-request-error';
 
 const router = express.Router();
 
@@ -17,27 +19,37 @@ router.post(
         minSymbols: 1,
       })
       .withMessage(
-        "Password must have at least eight characters being at least one uppercase, one number and one special character",
+        "Password must have at least eight characters being at least one uppercase, one number and one special character"
       ),
-    body("birthDate")
+    body("birth_date")
       .isISO8601()
       .notEmpty()
       .withMessage("You must supply a correct birth date"),
-    body("firstName")
+    body("first_name")
       .matches("^[A-Za-zãáâéêíôõóú.\'\-\\s]+$")
       .notEmpty()
       .withMessage("You must supply a correct name"),
-    body("lastName")
+    body("last_name")
       .matches("^[A-Za-zãáâéêíôõóú.\'\-\\s]+$")
       .notEmpty()
       .withMessage("You must supply a correct last name"),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { email, password, birthDate, firstName, lastName } = req.body;
+    const { email, password, birth_date, first_name, last_name } = req.body;
+    let user = new Signup();
 
-    res.status(200).send({ email, password, birthDate, firstName, lastName });
-  },
+    await user.initialize();
+
+    if (await user.exists(email)) {      
+      throw new BadRequestError('Email already exists');
+    }
+
+    await user.create(email, password, birth_date, first_name, last_name);
+    user.close();
+
+    res.status(200).send({ email, password, birth_date, first_name, last_name });
+  }
 );
 
 export { router as signupRouter };
