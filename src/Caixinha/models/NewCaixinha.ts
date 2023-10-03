@@ -1,12 +1,12 @@
 import { uuid } from "uuidv4";
 import { DatabaseConnection } from "../../common/models/DatabaseConnection";
-
+import { BadRequestError } from "../../common/errors/bad-request-error";
 class NewCaixinha extends DatabaseConnection{
     public async createCaixinha(caixinha_name: string, tag: string, default_amount: number, user_id: string){
         const caixinha_ID = uuid();
         const caixinha = await this.newQuery(`SELECT * FROM user_caixinhas WHERE user_id = '${user_id}' AND caixinha_name = '${caixinha_name}'`);
         if(caixinha.rows.length>0){
-            console.log("este usuario ja possui uma caixinha com esse nome");
+            throw new BadRequestError("Já existe uma caixinha com este nome");
         }else{
             const response = await this.newQuery(`INSERT INTO user_caixinhas (caixinha_id, caixinha_name, tag, default_amount, user_id)
                                                 VALUES ('${caixinha_ID}', '${caixinha_name}', '${tag}', '${default_amount}', '${user_id}')`);
