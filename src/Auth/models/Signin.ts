@@ -1,6 +1,7 @@
 import { Password } from "../services/password";
 import { DatabaseConnection } from "../../common/models/DatabaseConnection";
-
+import { BadRequestError } from "../../common/errors/bad-request-error";
+import { NotFoundError } from  "../../common/errors/not-found-error";
 class Signin extends DatabaseConnection{
     public async verifySignin(email: string, password: string){
         const user = await this.newQuery(`SELECT * FROM user_info WHERE email = '${email}'`);
@@ -8,15 +9,12 @@ class Signin extends DatabaseConnection{
             const password_db = user.rows[0].password;
             const isPasswordCorrect = await Password.compare(password_db, password);
             if (isPasswordCorrect) {
-                console.log("user found.");
                 return user;
             } else {
-                console.log("Incorrect password.");
-                return false;
+                throw new BadRequestError("Incorrect password");
             }
         }else{
-            console.log("User not found");
-            return false;
+            throw new NotFoundError();    
         }
     }     
 }
