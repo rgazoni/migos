@@ -4,11 +4,12 @@ metadata:
   name: ingress-srv
 spec:
   ingressClassName: nginx
+  nginx.ingress.kubernetes.io/use-regex: 'true'
   rules:
     - host: migos.com
       http:
         paths:
-          - path: /users
+          - path: /?(.*)
             pathType: ImplementationSpecific
             backend:
               service:
