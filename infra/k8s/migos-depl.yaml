@@ -15,3 +15,17 @@ spec:
       containers:
         - name: migos
           image: rgazonil/migos
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: migos-clusterip-srv
+spec:
+  selector:
+    app: migos
+  type: ClusterIP
+  ports:
+    - name: migos
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
