@@ -27,7 +27,8 @@ router.post(
         //create a new connection, requires a new query and close 
         await user.initialize();
 
-        const existingUser = await user.verifySignin(email,password); //await user.newQuery(`SELECT password FROM user_info WHERE email = '${email}'`);
+        const existingUser = await user.verifySignin(email, password); //await user.newQuery(`SELECT password FROM user_info WHERE email = '${email}'`);
+        
         user.close();
         
         //if the query was successfully done, then send it to postman
