@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: migos
-          image: rgazonil/migos:latest
+          image: rgazonil/migos
+          imagePullPolicy: Always
 ---
 apiVersion: v1
 kind: Service
