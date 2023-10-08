@@ -20,16 +20,16 @@ app.use(json());
 // https://stackoverflow.com/questions/14003332/access-control-allow-origin-wildcard-subdomains-ports-and-protocols
 // https://stackoverflow.com/questions/8074665/cross-origin-resource-sharing-with-credentials
 
-app.use(
-  cors({
-    methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
-    origin: "http://localhost:3000",
-    preflightContinue: true,
-    credentials: true,
-    exposedHeaders: ["set-cookie"],
-    //allowedHeaders: ['Content-Type', 'Authorization']
-  }),
-);
+// app.use(
+//   cors({
+//     methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
+//     origin: "http://localhost:3000",
+//     preflightContinue: true,
+//     credentials: true,
+//     exposedHeaders: ["set-cookie"],
+//     //allowedHeaders: ['Content-Type', 'Authorization']
+//   }),
+// );
 
 // Use routes
 app.use(signinRouter);

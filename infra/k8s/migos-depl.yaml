@@ -19,11 +19,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: migos-clusterip-srv
+  name: migos-srv
 spec:
   selector:
     app: migos
-  type: ClusterIP
   ports:
     - name: migos
       protocol: TCP
