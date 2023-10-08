@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: migos
-          image: rgazonil/migos
+          image: rgazonil/migos:latest
 ---
 apiVersion: v1
 kind: Service
