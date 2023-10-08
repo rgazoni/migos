@@ -1,7 +1,7 @@
  - apiVersion: v1
   kind: Namespace
   metadata:
-    name: default-1696782189709
+    name: default-1696776253192
   spec:
     finalizers:
       - kubernetes
@@ -9,7 +9,7 @@
   kind: Deployment
   metadata:
     name: migos
-    namespace: default-1696782189709
+    namespace: default-1696776253192
   spec:
     replicas: 1
     selector:
@@ -71,7 +71,7 @@
   kind: Service
   metadata:
     name: migos-service
-    namespace: default-1696782189709
+    namespace: default-1696776253192
   spec:
     type: LoadBalancer
     ports:
