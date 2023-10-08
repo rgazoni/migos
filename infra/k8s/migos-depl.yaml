@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: migos
-          image: rgazonil/migos
+          image: southamerica-east1-docker.pkg.dev/hale-facet-401320/migos-project/migos
           imagePullPolicy: Always
 ---
 apiVersion: v1

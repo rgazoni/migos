@@ -7,8 +7,8 @@ build:
   local:
     push: false
   artifacts:
-    - image: rgazonil/auth
-      context: auth
+    - image: southamerica-east1-docker.pkg.dev/hale-facet-401320/migos-project/migos
+      context: .
       docker:
         dockerfile: Dockerfile
       sync:
