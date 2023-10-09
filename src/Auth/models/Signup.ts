@@ -22,7 +22,7 @@ class Signup extends DatabaseConnection{
         if(response.rowCount == 0){
             throw new InternalServerError('Something went wrong');
         }
-    }
+    } 
 }
 
 export { Signup };
