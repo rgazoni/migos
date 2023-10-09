@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: migos
+  labels:
+    app: migos
+  namespace: default-1696776253192
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: migos
+  template:
+    metadata:
+      labels:
+        app: migos
+    spec:
+      containers:
+        - name: migos
+          image: migos.azurecr.io/migosmonolith:latest
+          ports:
+            - containerPort: 3000
