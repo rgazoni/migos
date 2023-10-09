@@ -9,6 +9,7 @@ import { signupRouter } from "./Auth/routes/signup";
 import { caixinhaRouter } from "./Caixinha/routes/caixinha";
 import { errorHandler } from './common/middlewares/error-handler';
 import { NotFoundError } from './common/errors/not-found-error';
+import { bankStatementRoute } from "./Auth/routes/bankStatement";
 
 
 const app = express();
@@ -20,21 +21,23 @@ app.use(json());
 // https://stackoverflow.com/questions/14003332/access-control-allow-origin-wildcard-subdomains-ports-and-protocols
 // https://stackoverflow.com/questions/8074665/cross-origin-resource-sharing-with-credentials
 
-app.use(
-  cors({
-    methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
-    origin: "http://localhost:3000",
-    preflightContinue: true,
-    credentials: true,
-    exposedHeaders: ["set-cookie"],
-    //allowedHeaders: ['Content-Type', 'Authorization']
-  }),
-);
+// app.use(
+//   cors({
+//     methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
+//     origin: "http://localhost:3000",
+//     preflightContinue: true,
+//     credentials: true,
+//     exposedHeaders: ["set-cookie"],
+//     //allowedHeaders: ['Content-Type', 'Authorization']
+//   }),
+// );
 
 // Use routes
 app.use(signinRouter);
 app.use(signupRouter);
 app.use(caixinhaRouter);
+app.use(bankStatementRoute);
+// app.use(newCaixinhaRouter);
 
 
 //We have installed a library to workaround the default pattern that
