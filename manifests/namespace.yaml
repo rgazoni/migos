@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: default-1696776253192
+spec:
+  finalizers:
+    - kubernetes
