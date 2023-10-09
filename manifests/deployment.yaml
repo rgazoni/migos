@@ -15,8 +15,50 @@ spec:
       labels:
         app: migos
     spec:
+      nodeSelector:
+          kubernetes.io/os: linux
       containers:
         - name: migos
           image: migos.azurecr.io/migosmonolith:latest
           ports:
             - containerPort: 3000
+            - containerPort: 5432
+          resources:
+              requests:
+                cpu: 500m
+                memory: 512M
+              limits:
+                cpu: 1000m
+                memory: 1024M
+          env:
+            # Name that we are going to access inside our container
+            - name: RDS_USER
+              valueFrom:
+                # Secret name on kube secret obj
+                secretKeyRef:
+                  name: rds-user-secret
+                  key: RDS_USER
+            - name: RDS_HOST
+              valueFrom:
+                # Secret name on kube secret obj
+                secretKeyRef:
+                  name: rds-host-secret
+                  key: RDS_HOST
+            - name: RDS_PASSWORD
+              valueFrom:
+                # Secret name on kube secret obj
+                secretKeyRef:
+                  name: rds-password-secret
+                  key: RDS_PASSWORD
+            - name: RDS_DATABASE
+              valueFrom:
+                # Secret name on kube secret obj
+                secretKeyRef:
+                  name: rds-database-secret
+                  key: RDS_DATABASE
+            - name: RDS_PORT
+              valueFrom:
+                # Secret name on kube secret obj
+                secretKeyRef:
+                  name: rds-port-secret
+                  key: RDS_PORT
