@@ -24,14 +24,14 @@ router.post(
             .notEmpty(),
         body('caixinha_name')
             .notEmpty()
-            .withMessage("Tag must be valid"),
+            .withMessage("name must be valid"),
         body('tag')
             .notEmpty()
-            .withMessage("Amoug must be valid"),
+            .withMessage("tag must be valid"),
         body('default_amount')
             .toFloat()
             .notEmpty()
-            .withMessage("Box Id must be valid")
+            .withMessage("amount must be valid")
     ],
     validateRequest,
 
