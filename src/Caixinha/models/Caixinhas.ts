@@ -17,13 +17,13 @@ class Caixinhas extends DatabaseConnection{
         }
     }
     
-    public async returnUserCaixinhas(user_id: string){
+    public async fetchUserCaixinhas(user_id: string){
         const allCaixinhas = await this.newQuery(`SELECT * FROM user_caixinhas where user_id = '${user_id}'`);
         return allCaixinhas.rows;
     }
 
-    public async returnCaixinhaTags(user_id: string){
-        const allCaixinhas = await this.newQuery(`SELECT * FROM caixinhas_tags where user_id = '${user_id}'`);
+    public async fetchCaixinhaTags(user_id: string){
+        const allCaixinhas = await this.newQuery(`SELECT * FROM caixinha_tags where user_id = '${user_id}'`);
         return allCaixinhas.rows;
     }    
 }
