@@ -9,7 +9,6 @@ import { signupRouter } from "./Auth/routes/signup";
 import { caixinhaRouter } from "./Caixinha/routes/caixinha";
 import { errorHandler } from './common/middlewares/error-handler';
 import { NotFoundError } from './common/errors/not-found-error';
-import { bankStatementRoute } from "./Auth/routes/bankStatement";
 
 
 const app = express();
@@ -36,7 +35,6 @@ app.use(json());
 app.use(signinRouter);
 app.use(signupRouter);
 app.use(caixinhaRouter);
-app.use(bankStatementRoute);
 // app.use(newCaixinhaRouter);
 
 
