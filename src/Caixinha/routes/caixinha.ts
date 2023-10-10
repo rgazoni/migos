@@ -2,6 +2,7 @@ import express, { Response, Request } from 'express';
 import { Caixinhas } from '../models/Caixinhas';
 import { body } from 'express-validator';
 import { validateRequest } from '../../Auth/middlewares/validate-request';
+import { BankModule } from '../services/bank_module';
 
 const router = express.Router();
 
@@ -10,9 +11,11 @@ router.get(
     async (req: Request, res: Response) => {
         const user_id = req.params.user_id;
         const caixinhas = new Caixinhas();
+
+        BankModule.match_statements('', '');
     
         await caixinhas.initialize();
-        const caixinhasData = await caixinhas.returnUserCaixinhas(user_id);
+        const caixinhasData = await caixinhas.fetchUserCaixinhas(user_id);
         res.status(200).json(caixinhasData); 
     }
 );
