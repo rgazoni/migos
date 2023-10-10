@@ -12,7 +12,7 @@ router.get(
         const user_id = req.params.user_id;
         const caixinhas = new Caixinhas();
 
-        BankModule.match_statements('', '');
+        BankModule.match_statements();
     
         await caixinhas.initialize();
         const caixinhasData = await caixinhas.fetchUserCaixinhas(user_id);
