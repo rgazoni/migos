@@ -1,7 +1,8 @@
 import { uuid } from "uuidv4";
 import { DatabaseConnection } from "../../common/models/DatabaseConnection";
 import { BadRequestError } from "../../common/errors/bad-request-error";
-class NewCaixinha extends DatabaseConnection{
+
+class Caixinhas extends DatabaseConnection{
     public async createCaixinha(caixinha_name: string, tag: string, default_amount: number, user_id: string){
         const caixinha_ID = uuid();
         const caixinha = await this.newQuery(`SELECT * FROM user_caixinhas WHERE user_id = '${user_id}' AND caixinha_name = '${caixinha_name}'`);
@@ -16,9 +17,14 @@ class NewCaixinha extends DatabaseConnection{
         }
     }
     
-    public async returnCaixinhas(user_id: string){
+    public async returnUserCaixinhas(user_id: string){
         const allCaixinhas = await this.newQuery(`SELECT * FROM user_caixinhas where user_id = '${user_id}'`);
+        return allCaixinhas.rows;
+    }
+
+    public async returnCaixinhaTags(user_id: string){
+        const allCaixinhas = await this.newQuery(`SELECT * FROM caixinhas_tags where user_id = '${user_id}'`);
         return allCaixinhas.rows;
     }    
 }
-export { NewCaixinha }
+export { Caixinhas }
