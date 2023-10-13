@@ -25,7 +25,15 @@ class Caixinhas extends DatabaseConnection{
         }else{
             throw new InternalServerError('ID não encontrado'); 
         }
-    
-    }    
+    }
+
+    public async fetchCaixinhaTags(user_id: string){
+        const allCaixinhas = await this.newQuery(`SELECT * FROM caixinha_tags where user_id = '${user_id}'`);
+        if(allCaixinhas.rows.length > 0) {
+            return allCaixinhas.rows;
+        }else{
+            throw new InternalServerError('ID não encontrado'); 
+        }
+    }
 }
 export { Caixinhas }
