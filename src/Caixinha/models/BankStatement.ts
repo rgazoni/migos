@@ -27,9 +27,9 @@ class BankStatement extends DatabaseConnection{
 
             query = query.concat(statement);
         });
-        
+        console.log(query);
         const response = await this.newQuery(query);
-
+        console.log(response);
         if(response.rowCount == 0){
             throw new InternalServerError('Something went wrong');
         }

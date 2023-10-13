@@ -1,5 +1,5 @@
 import express, { Response, Request } from 'express';
-import { NewUndefined_statement } from '../models/NewUndefined_statement';
+import { UndefinedStatement } from '../models/UndefinedStatement';
 
 const router = express.Router();
 
@@ -8,10 +8,10 @@ router.get(
     // /:user_id
     async (req: Request, res: Response) => {
         const user_id = req.params.user_id;
-        const undefined_statements = new NewUndefined_statement();
+        const undefined_statements = new UndefinedStatement();
 
         await undefined_statements.initialize();
-        const data = await undefined_statements.get_user_id(user_id);
+        const data = await undefined_statements.fetch_undefined_statements(user_id);
         
         // const array = [
         //     {
@@ -54,4 +54,4 @@ router.get(
 );
 
 
-export { router as Undefined_statementRouter };
+export { router as UndefinedStatementRouter };

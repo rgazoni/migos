@@ -1,9 +1,9 @@
 import { DatabaseConnection } from "../../common/models/DatabaseConnection";
 import { InternalServerError } from "../../common/errors/internal-server-error";
 
-class NewUndefined_statement extends DatabaseConnection{
+class UndefinedStatement extends DatabaseConnection{
     
-    public async insert_undefined_statements(undefined_statements: Array<{transaction_id: string,  amount: number, title: string, user_id: string}>){
+    public async insert(undefined_statements: Array<{transaction_id: string,  amount: number, title: string, user_id: string}>){
         const timestamp = Date.now();
         let query = `INSERT INTO undefined_statements (transaction_id, amount, time, title, user_id) VALUES`;
         let length = undefined_statements.length;
@@ -33,7 +33,7 @@ class NewUndefined_statement extends DatabaseConnection{
         }
     }
 
-    public async delete_data(undefined_statements: Array<{ transaction_id: string }>) {
+    public async delete(undefined_statements: Array<{ transaction_id: string }>) {
         if (undefined_statements.length === 0) {
             throw new InternalServerError('Array vazio');
         }
@@ -47,7 +47,7 @@ class NewUndefined_statement extends DatabaseConnection{
         
     }
     
-    public async get_user_id(user_id: string){
+    public async fetch_undefined_statements(user_id: string){
         const allUsers = await this.newQuery(`SELECT * FROM undefined_statements WHERE user_id = '${user_id}'`);
         if(allUsers.rows.length > 0) {
             return allUsers.rows;
@@ -57,4 +57,4 @@ class NewUndefined_statement extends DatabaseConnection{
     }
 }
 
-export { NewUndefined_statement }
+export { UndefinedStatement }
