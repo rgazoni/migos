@@ -8,6 +8,9 @@ import { signupRouter } from "./Auth/routes/signup";
 import { caixinhaRouter } from "./Caixinha/routes/caixinha";
 import { errorHandler } from './common/middlewares/error-handler';
 import { NotFoundError } from './common/errors/not-found-error';
+import { UndefinedStatementRouter } from "./Caixinha/routes/undefined_statement";
+
+
 
 const app = express();
 
@@ -18,6 +21,9 @@ app.use(json());
 app.use(signinRouter);
 app.use(signupRouter);
 app.use(caixinhaRouter);
+app.use(UndefinedStatementRouter);
+
+
 
 //We have installed a library to workaround the default pattern that
 //JS deals with throw and async communication

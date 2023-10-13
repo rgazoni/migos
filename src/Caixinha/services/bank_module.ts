@@ -1,5 +1,7 @@
 import { BankApi } from "../models/BankApi";
+import { BankStatement } from "../models/BankStatement";
 import { Caixinhas } from "../models/Caixinhas";
+import { UndefinedStatement } from "../models/UndefinedStatement";
 
 interface HashTable<T> {
     [key: string]: T;
@@ -30,12 +32,13 @@ export class BankModule {
     }
 
     static async match_statements(){
-       
         const user_id = "678ebd14-510f-4954-bdf3-dc0dea9aef0c";
 
         //This could be later improved to make a more complex query looking also
         //to undefined data and bank statements, in order to fetch from the bank api
         //just the last transactions accordingly to time, that yet was not fetched.
+
+        //Also both of these calls could be done in parallel to avoid wasting time
         const statements : any[] = await BankModule.fetch_month_statements(user_id);
         const tags = await BankModule.fetch_caixinha_tags(user_id);
 
@@ -46,8 +49,8 @@ export class BankModule {
             hash_tags[tag.tag] = tag.caixinha_id;
         });
 
-        const bank_statements = [];
-        const undefined_statements = [];
+        const bank_statements: any[] = [];
+        const undefined_statements: any[] = [];
 
         statements.forEach( (statement) => {
             if (hash_tags[statement.title]) {
@@ -58,14 +61,17 @@ export class BankModule {
             }
         });
 
-        //Update undefined data
-        //Remove data if exist
-        //Insert data
+        console.log(bank_statements);
 
-        //Update statements data
+        // const bank_statement = new BankStatement();
+        // await bank_statement.initialize();
+        // await bank_statement.insert(bank_statements);
+        // bank_statement.close();
 
-        console.log(statements)
-        console.log(tags)
+        const undefined_statement = new UndefinedStatement();
+        await undefined_statement.initialize();
+        await undefined_statement.insert(undefined_statements);
+        undefined_statement.close();
 
     }
 
