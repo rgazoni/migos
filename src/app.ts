@@ -11,6 +11,7 @@ import { NotFoundError } from './common/errors/not-found-error';
 import { Undefined_statementRouter } from "./Caixinha/routes/undefined_statement";
 
 
+
 const app = express();
 
 app.set("trust proxy", true);
@@ -21,6 +22,7 @@ app.use(signinRouter);
 app.use(signupRouter);
 app.use(caixinhaRouter);
 app.use(Undefined_statementRouter);
+
 
 
 //We have installed a library to workaround the default pattern that
