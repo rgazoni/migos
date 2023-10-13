@@ -1,6 +1,7 @@
 import { uuid } from "uuidv4";
 import { DatabaseConnection } from "../../common/models/DatabaseConnection";
 import { BadRequestError } from "../../common/errors/bad-request-error";
+import { InternalServerError } from "../../common/errors/internal-server-error";
 
 class Caixinhas extends DatabaseConnection{
     public async createCaixinha(caixinha_name: string, tag: string, default_amount: number, user_id: string){
@@ -19,12 +20,12 @@ class Caixinhas extends DatabaseConnection{
     
     public async fetchUserCaixinhas(user_id: string){
         const allCaixinhas = await this.newQuery(`SELECT * FROM user_caixinhas where user_id = '${user_id}'`);
-        return allCaixinhas.rows;
-    }
-
-    public async fetchCaixinhaTags(user_id: string){
-        const allCaixinhas = await this.newQuery(`SELECT * FROM caixinha_tags where user_id = '${user_id}'`);
-        return allCaixinhas.rows;
+        if(allCaixinhas.rows.length > 0) {
+            return allCaixinhas.rows;
+        }else{
+            throw new InternalServerError('ID não encontrado'); 
+        }
+    
     }    
 }
 export { Caixinhas }
