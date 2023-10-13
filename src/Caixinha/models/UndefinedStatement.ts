@@ -46,14 +46,19 @@ class UndefinedStatement extends DatabaseConnection{
         }
         
     }
-    
-    public async fetch_undefined_statements(user_id: string){
-        const allUsers = await this.newQuery(`SELECT * FROM undefined_statements WHERE user_id = '${user_id}'`);
-        if(allUsers.rows.length > 0) {
-            return allUsers.rows;
-        }else{
-            throw new InternalServerError('ID não encontrado'); 
-        }
+
+    public async fetch_month_undefined_statements(user_id: string, MM: string, YYYY: number){
+
+        const statements = await this.newQuery(`SELECT * FROM undefined_statements 
+                                               WHERE user_id = '${user_id}' 
+                                               AND TO_CHAR(TO_TIMESTAMP(time / 1000), 'MM YYYY') = '${MM} ${YYYY}'`);
+
+        console.log("statements.rows: ", statements.rows);
+        if(!statements.rows.length)
+            return { results: [] };
+
+        return { results: statements.rows };
+
     }
 }
 
