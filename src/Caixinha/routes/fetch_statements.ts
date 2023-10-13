@@ -9,7 +9,7 @@ router.get(
 
         const user_id = req.params.user_id;
         console.log("user_id: ", user_id);
-        const statements = await BankModule.fetch_statements(user_id);
+        const statements = await BankModule.match_statements(user_id);
         
         //if the query was successfully done, then send it to postman
         res.status(200).send( statements );

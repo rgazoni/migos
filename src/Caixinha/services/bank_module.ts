@@ -31,16 +31,16 @@ export class BankModule {
         return tags;
     }
 
-    static async match_statements(){
-        const user_id = "678ebd14-510f-4954-bdf3-dc0dea9aef0c";
+    static async match_statements(user_id: string){
+        const user_idq = "678ebd14-510f-4954-bdf3-dc0dea9aef0c";
 
         //This could be later improved to make a more complex query looking also
         //to undefined data and bank statements, in order to fetch from the bank api
         //just the last transactions accordingly to time, that yet was not fetched.
 
         //Also both of these calls could be done in parallel to avoid wasting time
-        const statements : any[] = await BankModule.fetch_month_statements(user_id);
-        const tags = await BankModule.fetch_caixinha_tags(user_id);
+        const statements : any[] = await BankModule.fetch_month_statements(user_idq);
+        const tags = await BankModule.fetch_caixinha_tags(user_idq);
 
         const hash_tags : HashTable<string> = {};
         tags.map( tag => { 
@@ -63,10 +63,10 @@ export class BankModule {
 
         console.log(bank_statements);
 
-        // const bank_statement = new BankStatement();
-        // await bank_statement.initialize();
-        // await bank_statement.insert(bank_statements);
-        // bank_statement.close();
+        const bank_statement = new BankStatement();
+        await bank_statement.initialize();
+        await bank_statement.insert(bank_statements);
+        bank_statement.close();
 
         const undefined_statement = new UndefinedStatement();
         await undefined_statement.initialize();
