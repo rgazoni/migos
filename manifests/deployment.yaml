@@ -1,41 +1,36 @@
- - apiVersion: v1
-  kind: Namespace
-  metadata:
-    name: default-1696776253192
-  spec:
-    finalizers:
-      - kubernetes
-- apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: migos
-    namespace: default-1696776253192
-  spec:
-    replicas: 1
-    selector:
-      matchLabels:
-        app: migos
-    template:
-      metadata:
-        labels:
-          app: migos
-      spec:
-        nodeSelector:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: migosmonolith
+  labels:
+    app: migosmonolith
+  namespace: default-1696776253192
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: migosmonolith
+  template:
+    metadata:
+      labels:
+        app: migosmonolith
+    spec:
+      nodeSelector:
           kubernetes.io/os: linux
-        containers:
-          - name: migos
-            image: rgazonil/migos
-            ports:
-              - containerPort: 3000
-              - containerPort: 5432
-            resources:
+      containers:
+        - name: migosmonolith
+          image: migos.azurecr.io/migosmonolith:latest
+          ports:
+            - containerPort: 3000
+            - containerPort: 5432
+          resources:
               requests:
                 cpu: 500m
                 memory: 512M
               limits:
                 cpu: 1000m
                 memory: 1024M
-            env:
+          env:
             # Name that we are going to access inside our container
             - name: RDS_USER
               valueFrom:
@@ -67,21 +62,3 @@
                 secretKeyRef:
                   name: rds-port-secret
                   key: RDS_PORT
-- apiVersion: v1
-  kind: Service
-  metadata:
-    name: migos-service
-    namespace: default-1696776253192
-  spec:
-    type: LoadBalancer
-    ports:
-      - targetPort: 3000
-        name: port3000
-        port: 3000
-        protocol: TCP
-      - targetPort: 5432
-        name: port5432
-        port: 5432
-        protocol: TCP
-    selector:
-      app: migos

@@ -3,7 +3,7 @@ import { DatabaseConnection } from "../../common/models/DatabaseConnection";
 import { BadRequestError } from "../../common/errors/bad-request-error";
 import { InternalServerError } from "../../common/errors/internal-server-error";
 
-class NewCaixinha extends DatabaseConnection{
+class Caixinhas extends DatabaseConnection{
     public async createCaixinha(caixinha_name: string, tag: string, default_amount: number, user_id: string){
         const caixinha_ID = uuid();
         const caixinha = await this.newQuery(`SELECT * FROM user_caixinhas WHERE user_id = '${user_id}' AND caixinha_name = '${caixinha_name}'`);
@@ -18,7 +18,7 @@ class NewCaixinha extends DatabaseConnection{
         }
     }
     
-    public async returnCaixinhas(user_id: string){
+    public async fetchUserCaixinhas(user_id: string){
         const allCaixinhas = await this.newQuery(`SELECT * FROM user_caixinhas where user_id = '${user_id}'`);
         if(allCaixinhas.rows.length > 0) {
             return allCaixinhas.rows;
@@ -28,4 +28,4 @@ class NewCaixinha extends DatabaseConnection{
     
     }    
 }
-export { NewCaixinha }
+export { Caixinhas }
