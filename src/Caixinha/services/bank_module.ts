@@ -63,10 +63,10 @@ export class BankModule {
 
         console.log(bank_statements);
 
-        // const bank_statement = new BankStatement();
-        // await bank_statement.initialize();
-        // await bank_statement.insert(bank_statements);
-        // bank_statement.close();
+        const bank_statement = new BankStatement();
+        await bank_statement.initialize();
+        await bank_statement.insert(bank_statements);
+        bank_statement.close();
 
         const undefined_statement = new UndefinedStatement();
         await undefined_statement.initialize();
