@@ -1,22 +1,59 @@
 import { DatabaseConnection } from "../../common/models/DatabaseConnection";
+import { InternalServerError } from "../../common/errors/internal-server-error";
 
 class NewUndefined_statement extends DatabaseConnection{
     
-    public async create_undefined_statements(transaction_id: string,  amount: number, title: string, user_id: string){
+    public async insert_undefined_statements(undefined_statements: Array<{transaction_id: string,  amount: number, title: string, user_id: string}>){
         const timestamp = Date.now();
-        console.log(timestamp);
+        let query = `INSERT INTO undefined_statements (transaction_id, amount, time, title, user_id) VALUES`;
+        let length = undefined_statements.length;
+        let statement;
 
-        await this.newQuery(`INSERT INTO undefined_statements (transaction_id, amount, time, title, user_id)
-            VALUES ('${transaction_id}', '${amount}', '${timestamp}', '${title}', '${user_id}')`);
+        if(length == 0){
+            throw new InternalServerError('Array Vazio');
+        }
+
+        undefined_statements.forEach(element => {
+            statement = `('${element.transaction_id}', '${element.amount}', '${timestamp}', '${element.title}', '${element.user_id}')`;
+            
+            length = length - 1;
+            if(length != 0){
+                statement = statement.concat(`,`);
+            } else{
+                statement = statement.concat(` ON CONFLICT (transaction_id) DO NOTHING;`); 
+            }
+
+            query = query.concat(statement);
+        });
+
+        const response = await this.newQuery(query);
+
+        if(response.rowCount == 0){
+            throw new InternalServerError('Estes dados já existem');
+        }
     }
 
-    public async remove_data(transaction_id : string){
-        await this.newQuery(`DELETE FROM undefined_statements Where transaction_id = '${transaction_id}' `);
-        console.log(transaction_id);
+    public async delete_data(undefined_statements: Array<{ transaction_id: string }>) {
+        if (undefined_statements.length === 0) {
+            throw new InternalServerError('Array vazio');
+        }
+    
+        const transactionIds = undefined_statements.map(element => `'${element.transaction_id}'`).join(', ');
+        const query = `DELETE FROM undefined_statements WHERE transaction_id IN (${transactionIds})`;
+        const response = await this.newQuery(query);
+        if(response.rowCount === 0){
+            throw new InternalServerError('ID não encontrado');
+        }
+        
     }
-
-    public async return_undefined_statements(user_id: string){
-        const data = await this.newQuery(`SELECT *FROM undefined_statements WHERE user_id = '${user_id}'`);
+    
+    public async get_user_id(user_id: string){
+        const allUsers = await this.newQuery(`SELECT * FROM undefined_statements WHERE user_id = '${user_id}'`);
+        if(allUsers.rows.length > 0) {
+            return allUsers.rows;
+        }else{
+            throw new InternalServerError('ID não encontrado'); 
+        }
     }
 }
 

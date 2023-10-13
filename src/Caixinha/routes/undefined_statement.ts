@@ -1,22 +1,57 @@
 import express, { Response, Request } from 'express';
-import { validateRequest } from '../../Auth/middlewares/validate-request';
 import { NewUndefined_statement } from '../models/NewUndefined_statement';
 
 const router = express.Router();
 
-router.post(
-    '/api/users/undefined_statement',
-    //  /:transaction_id
+router.get(
+    '/api/users/undefined_statement/:user_id',
+    // /:user_id
     async (req: Request, res: Response) => {
-        //const transaction_id = req.params.transaction_id;
+        const user_id = req.params.user_id;
         const undefined_statements = new NewUndefined_statement();
 
         await undefined_statements.initialize();
-        await undefined_statements.create_undefined_statements("1234", 200, "ASDAD", "4567");
+        const data = await undefined_statements.get_user_id(user_id);
+        
+        // const array = [
+        //     {
+        //         "transaction_id": "12348",
+        //         "amount": 235,
+        //         "title": "asdasdsafsa",
+        //         "user_id": "456"
+        //     },
+        //     {
+        //         "transaction_id": "123485454",
+        //         "amount": 456,
+        //         "title": "asdasdsafsa",
+        //         "user_id": "123"
+        //     },
+        //     {   
+        //         "transaction_id": "12344548",
+        //         "amount": 1522,
+        //         "title": "asdasdsafsaasdaadsd",
+        //         "user_id": "123"
+        //     },
+        //     {   
+        //         "transaction_id": "12348545",
+        //         "amount": 2000,
+        //         "title": "asdasdsafsaasdaadsd",
+        //         "user_id": "145"
+        //     }
+        // ]
+        // await undefined_statements.insert_undefined_statements(array);
+        // const array = [
+        //     {
+        //         "transaction_id": "12345"
+        //     }
+        // ]
+        // await undefined_statements.delete_data(array);
         undefined_statements.close();
-        res.status(200).send("inserido com sucesso");
-        //await undefined_statements.remove_data(transaction_id);
-    }
+        //res.status(200).send("criado");
+        res.status(200).json(data);
+        
+    }   
 );
+
 
 export { router as Undefined_statementRouter };
