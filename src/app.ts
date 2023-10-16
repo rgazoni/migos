@@ -9,7 +9,7 @@ import { caixinhaRouter } from "./Caixinha/routes/caixinha";
 import { errorHandler } from './common/middlewares/error-handler';
 import { NotFoundError } from './common/errors/not-found-error';
 import { UndefinedStatementRouter } from "./Caixinha/routes/undefined_statement";
-import { fetch_statements_router } from "./Caixinha/routes/fetch_statements";
+import { userInfoRouter } from "./Caixinha/routes/user_info_feature";
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.use(signinRouter);
 app.use(signupRouter);
 app.use(caixinhaRouter);
 app.use(UndefinedStatementRouter);
-app.use(fetch_statements_router);
+app.use(userInfoRouter);
 
 
 //We have installed a library to workaround the default pattern that
