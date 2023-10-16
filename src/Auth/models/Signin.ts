@@ -15,7 +15,7 @@ class Signin extends DatabaseConnection{
                 throw new BadRequestError("Incorrect password");
             }
         }else{
-            throw new NotFoundError();    
+            throw new NotFoundError();
         }
     }     
 }

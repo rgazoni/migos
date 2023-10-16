@@ -36,15 +36,16 @@ class BankStatement extends DatabaseConnection{
     }
 
 
-    public async findUserById(user_id: string){
-        const query = `SELECT * FROM user_info WHERE email = '${user_id}'`;
-    
-        const response = await this.newQuery(query);
-        if(response.rowCount == 0){
-            throw new InternalServerError('Something went wrong');
-        }
+    public async fetch_month_statements(user_id: string, MM: string, YYYY: number){
 
-        return response.rows;
+        const statements = await this.newQuery(`SELECT * FROM bank_statement 
+                                               WHERE user_id = '${user_id}' 
+                                               AND TO_CHAR(TO_TIMESTAMP(time / 1000), 'MM YYYY') = '${MM} ${YYYY}'`);
+
+        if(!statements.rows.length)
+            return { results: [] };
+
+        return { results: statements.rows };
     }
 }
 
