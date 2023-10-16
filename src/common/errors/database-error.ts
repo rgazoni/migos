@@ -4,7 +4,7 @@ export class InsertDatabaseError extends CustomError {
     statusCode = 500;
 
     constructor() {
-        super('Could not insert a new user');
+        super('Novo usuário não foi adicionado');
         Object.setPrototypeOf(this, InsertDatabaseError.prototype);
     }
 

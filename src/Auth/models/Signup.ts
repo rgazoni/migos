@@ -20,7 +20,7 @@ class Signup extends DatabaseConnection{
                                                 VALUES ('${user_id}', '${email}', '${birth_date}', '${first_name}', '${last_name}', '${hashedPassword}')`);
 
         if(response.rowCount == 0){
-            throw new InternalServerError('Something went wrong');
+            throw new InternalServerError('Algo deu errado');
         }
     } 
 }
