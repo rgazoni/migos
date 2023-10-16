@@ -22,7 +22,8 @@ router.post(
     '/api/users/caixinha',
     [
         body('user_id')
-            .notEmpty(),
+            .notEmpty()
+            .withMessage("user_id must be valid"),
         body('caixinha_name')
             .notEmpty()
             .withMessage("name must be valid"),
@@ -30,7 +31,6 @@ router.post(
             .notEmpty()
             .withMessage("tag must be valid"),
         body('default_amount')
-            .toFloat()
             .notEmpty()
             .withMessage("amount must be valid")
     ],
