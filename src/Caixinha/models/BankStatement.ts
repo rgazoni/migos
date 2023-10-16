@@ -29,10 +29,10 @@ class BankStatement extends DatabaseConnection{
         });
         console.log(query);
         const response = await this.newQuery(query);
-        console.log(response);
-        if(response.rowCount == 0){
-            throw new InternalServerError('Something went wrong');
-        }
+        // console.log(response);
+        // if(response.rowCount == 0){
+        //     throw new InternalServerError('Algo deu errado');
+        // }
     }
 
 
@@ -41,7 +41,7 @@ class BankStatement extends DatabaseConnection{
     
         const response = await this.newQuery(query);
         if(response.rowCount == 0){
-            throw new InternalServerError('Something went wrong');
+            throw new InternalServerError('Usuario nao encontrado');
         }
 
         return response.rows;

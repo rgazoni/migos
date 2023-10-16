@@ -11,8 +11,8 @@ class DatabaseConnection{
 
     public checkClient(){
         //check if client is undefined and, if it is, return a message to help developers and stop the code
-        if(this.client == undefined){
-            console.log("Query as undefined. Check await usage in init function")
+        if(this.client == undefined){ 
+            console.log("Query retornou 'undefined'. Checar o uso do await nas funções de inicialização.")
             process.exit(1)
         }
     }
