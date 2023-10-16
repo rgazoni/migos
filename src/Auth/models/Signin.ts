@@ -12,10 +12,10 @@ class Signin extends DatabaseConnection{
             if (isPasswordCorrect) {
                 return user.rows[0].user_id;
             } else {
-                throw new BadRequestError("Incorrect password");
+                throw new BadRequestError("Senha incorreta");
             }
         }else{
-            throw new NotFoundError();    
+            throw new BadRequestError("Email incorreto");    
         }
     }     
 }
