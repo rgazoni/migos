@@ -29,12 +29,11 @@ class BankStatement extends DatabaseConnection{
         });
         console.log(query);
         const response = await this.newQuery(query);
-        console.log(response);
-        if(response.rowCount == 0){
-            throw new InternalServerError('Something went wrong');
-        }
+        // console.log(response);
+        // if(response.rowCount == 0){
+        //     throw new InternalServerError('Algo deu errado');
+        // }
     }
-
 
     public async fetch_month_statements(user_id: string, MM: string, YYYY: number){
 
