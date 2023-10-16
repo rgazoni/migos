@@ -11,11 +11,11 @@ router.post(
     [
         body('email')
             .isEmail()
-            .withMessage('Email inválido'),
+            .withMessage('Email precisa ser válido'),
         body('password')
             .trim()
             .notEmpty()
-            .withMessage('Uma senha precisa ser fornecida')
+            .withMessage('Senha precisa ser válida')
     ],
     validateRequest,
     async (req: Request, res: Response) => {

@@ -9,9 +9,9 @@ class UndefinedStatement extends DatabaseConnection{
         let length = undefined_statements.length;
         let statement;
 
-        if(length == 0){
-            throw new InternalServerError('Array Vazio');
-        }
+        // if(length == 0){
+        //     throw new InternalServerError('Array Vazio');
+        // }
 
         undefined_statements.forEach(element => {
             statement = `('${element.transaction_id}', '${element.amount}', '${timestamp}', '${element.title}', '${element.user_id}')`;

@@ -15,7 +15,7 @@ class Signin extends DatabaseConnection{
                 throw new BadRequestError("Senha incorreta");
             }
         }else{
-            throw new NotFoundError();
+            throw new BadRequestError("Email incorreto");    
         }
     }     
 }
