@@ -35,16 +35,16 @@ class BankStatement extends DatabaseConnection{
         // }
     }
 
+    public async fetch_month_statements(user_id: string, MM: string, YYYY: number){
 
-    public async findUserById(user_id: string){
-        const query = `SELECT * FROM user_info WHERE email = '${user_id}'`;
-    
-        const response = await this.newQuery(query);
-        if(response.rowCount == 0){
-            throw new InternalServerError('Usuario nao encontrado');
-        }
+        const statements = await this.newQuery(`SELECT * FROM bank_statement 
+                                               WHERE user_id = '${user_id}' 
+                                               AND TO_CHAR(TO_TIMESTAMP(time / 1000), 'MM YYYY') = '${MM} ${YYYY}'`);
 
-        return response.rows;
+        if(!statements.rows.length)
+            return { results: [] };
+
+        return { results: statements.rows };
     }
 }
 
