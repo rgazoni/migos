@@ -9,9 +9,9 @@ class UndefinedStatement extends DatabaseConnection{
         let length = undefined_statements.length;
         let statement;
 
-        // if(length == 0){
-        //     throw new InternalServerError('Array Vazio');
-        // }
+        if(length == 0){
+            throw new InternalServerError('Array Vazio');
+        }
 
         undefined_statements.forEach(element => {
             statement = `('${element.transaction_id}', '${element.amount}', '${timestamp}', '${element.title}', '${element.user_id}')`;
@@ -26,11 +26,11 @@ class UndefinedStatement extends DatabaseConnection{
             query = query.concat(statement);
         });
 
-        const response = await this.newQuery(query);
+        await this.newQuery(query);
 
-        if(response.rowCount == 0){
-            throw new InternalServerError('Estes dados já existem');
-        }
+        // if(response.rowCount == 0){
+        //     throw new InternalServerError('Estes dados já existem');
+        // }
     }
 
     public async delete(undefined_statements: Array<{ transaction_id: string }>) {
@@ -53,7 +53,6 @@ class UndefinedStatement extends DatabaseConnection{
                                                WHERE user_id = '${user_id}' 
                                                AND TO_CHAR(TO_TIMESTAMP(time / 1000), 'MM YYYY') = '${MM} ${YYYY}'`);
 
-        console.log("statements.rows: ", statements.rows);
         if(!statements.rows.length)
             return { results: [] };
 

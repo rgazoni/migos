@@ -74,9 +74,7 @@ export class BankModule {
         await undefined_statement.insert(undefined_statements);
         undefined_statement.close();
 
-
-        console.log(bank_statements, undefined_statements)
-
+        return true;
     }
 
 }
