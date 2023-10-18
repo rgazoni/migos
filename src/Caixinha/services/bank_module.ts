@@ -21,9 +21,9 @@ export class BankModule {
         bank.close();
 
         return statements.results;
- 
+
     }
-    
+
     static async fetch_caixinha_tags(user_id: string){
         const caixinhas = new Caixinhas();
         await caixinhas.initialize();
