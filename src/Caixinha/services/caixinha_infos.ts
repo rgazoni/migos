@@ -53,15 +53,17 @@ export class CaixinhaInfos{
 
         const statements = new BankStatement();
         await statements.initialize();
-        const user_statements = await statements.fetch_month_statements(user_id, month.toString(), year);   
+        const user_statements = await statements.fetch_month_statements(user_id, month.toString(), year);
 
         return user_statements.results;
     }
 
     public async compute_caixinha_spends(user_id: string) {
 
-        const user_statements = await this.get_month_bank_statements(user_id);
-        const user_caixinhas = await this.getCaixinhas(user_id);
+        const [user_statements, user_caixinhas] = await Promise.all([
+            this.get_month_bank_statements(user_id),
+            this.getCaixinhas(user_id)
+        ]);
 
         const hash_tags : HashTable<CaixinhaOutput> = {};
         user_caixinhas.map( caixinha => {

@@ -4,7 +4,7 @@ import { PoolClient } from 'pg';
 class DatabaseConnection{
     client: PoolClient;
 
-    public async initialize(){         
+    public async initialize(){
         //connect a pool with one client 
         this.client = await pool.connect();
     }
