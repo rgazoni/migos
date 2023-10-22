@@ -1,11 +1,10 @@
 import { InternalServerError } from "../../common/errors/internal-server-error";
 import { DatabaseConnection } from "../../common/models/DatabaseConnection";
-import { v4 as uuid4 } from 'uuid';
 
 
 class BankStatement extends DatabaseConnection{
     public async insert(statements: Array<{ transaction_id: string, amount: number, title: string, user_id: string, caixinha_id: string }>){
-        let query = `INSERT INTO bank_statement (transaction_id, amount, time, title, user_id, caixinha_id) VALUES `;
+        let query = `INSERT INTO statements_related (transaction_id, amount, time, title, user_id, caixinha_id) VALUES `;
         let length = statements.length;
         let timestamp_str = Date.now();
         let timestamp = +timestamp_str;
@@ -27,24 +26,25 @@ class BankStatement extends DatabaseConnection{
 
             query = query.concat(statement);
         });
-        console.log(query);
-        const response = await this.newQuery(query);
-        console.log(response);
-        if(response.rowCount == 0){
-            throw new InternalServerError('Something went wrong');
-        }
+
+        await this.newQuery(query);
+
+        // console.log(response);
+        // if(response.rowCount == 0){
+        //     throw new InternalServerError('Algo deu errado');
+        // }
     }
 
+    public async fetch_month_statements(user_id: string, MM: string, YYYY: number){
 
-    public async findUserById(user_id: string){
-        const query = `SELECT * FROM user_info WHERE email = '${user_id}'`;
-    
-        const response = await this.newQuery(query);
-        if(response.rowCount == 0){
-            throw new InternalServerError('Something went wrong');
-        }
+        const statements = await this.newQuery(`SELECT * FROM statements_related 
+                                               WHERE user_id = '${user_id}' 
+                                               AND TO_CHAR(TO_TIMESTAMP(time / 1000), 'MM YYYY') = '${MM} ${YYYY}'`);
 
-        return response.rows;
+        if(!statements.rows.length)
+            return { results: [] };
+
+        return { results: statements.rows };
     }
 }
 

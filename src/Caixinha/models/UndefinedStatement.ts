@@ -3,17 +3,17 @@ import { InternalServerError } from "../../common/errors/internal-server-error";
 
 class UndefinedStatement extends DatabaseConnection{
     
-    public async insert(undefined_statements: Array<{transaction_id: string,  amount: number, title: string, user_id: string}>){
+    public async insert(statements_unrelated: Array<{transaction_id: string,  amount: number, title: string, user_id: string}>){
         const timestamp = Date.now();
-        let query = `INSERT INTO undefined_statements (transaction_id, amount, time, title, user_id) VALUES`;
-        let length = undefined_statements.length;
+        let query = `INSERT INTO statements_unrelated (transaction_id, amount, time, title, user_id) VALUES`;
+        let length = statements_unrelated.length;
         let statement;
 
         if(length == 0){
             throw new InternalServerError('Array Vazio');
         }
 
-        undefined_statements.forEach(element => {
+        statements_unrelated.forEach(element => {
             statement = `('${element.transaction_id}', '${element.amount}', '${timestamp}', '${element.title}', '${element.user_id}')`;
             
             length = length - 1;
@@ -26,34 +26,38 @@ class UndefinedStatement extends DatabaseConnection{
             query = query.concat(statement);
         });
 
-        const response = await this.newQuery(query);
+        await this.newQuery(query);
 
-        if(response.rowCount == 0){
-            throw new InternalServerError('Estes dados já existem');
-        }
+        // if(response.rowCount == 0){
+        //     throw new InternalServerError('Estes dados já existem');
+        // }
     }
 
-    public async delete(undefined_statements: Array<{ transaction_id: string }>) {
-        if (undefined_statements.length === 0) {
+    public async delete(statements_unrelated: Array<{ transaction_id: string }>) {
+        if (statements_unrelated.length === 0) {
             throw new InternalServerError('Array vazio');
         }
     
-        const transactionIds = undefined_statements.map(element => `'${element.transaction_id}'`).join(', ');
-        const query = `DELETE FROM undefined_statements WHERE transaction_id IN (${transactionIds})`;
+        const transactionIds = statements_unrelated.map(element => `'${element.transaction_id}'`).join(', ');
+        const query = `DELETE FROM statements_unrelated WHERE transaction_id IN (${transactionIds})`;
         const response = await this.newQuery(query);
         if(response.rowCount === 0){
             throw new InternalServerError('ID não encontrado');
         }
         
     }
-    
-    public async fetch_undefined_statements(user_id: string){
-        const allUsers = await this.newQuery(`SELECT * FROM undefined_statements WHERE user_id = '${user_id}'`);
-        if(allUsers.rows.length > 0) {
-            return allUsers.rows;
-        }else{
-            throw new InternalServerError('ID não encontrado'); 
-        }
+
+    public async fetch_month_undefined_statements(user_id: string, MM: string, YYYY: number){
+
+        const statements = await this.newQuery(`SELECT * FROM statements_unrelated 
+                                               WHERE user_id = '${user_id}' 
+                                               AND TO_CHAR(TO_TIMESTAMP(time / 1000), 'MM YYYY') = '${MM} ${YYYY}'`);
+
+        if(!statements.rows.length)
+            return { results: [] };
+
+        return { results: statements.rows };
+
     }
 }
 

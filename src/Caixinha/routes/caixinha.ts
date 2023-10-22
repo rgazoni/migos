@@ -11,8 +11,6 @@ router.get(
     async (req: Request, res: Response) => {
         const user_id = req.params.user_id;
         const caixinhas = new Caixinhas();
-
-        BankModule.match_statements();
     
         await caixinhas.initialize();
         const caixinhasData = await caixinhas.fetchUserCaixinhas(user_id);
@@ -24,17 +22,17 @@ router.post(
     '/api/users/caixinha',
     [
         body('user_id')
-            .notEmpty(),
+            .notEmpty()
+            .withMessage("user_id must be valid"),
         body('caixinha_name')
             .notEmpty()
-            .withMessage("name must be valid"),
+            .withMessage("nome inválido"),
         body('tag')
             .notEmpty()
-            .withMessage("tag must be valid"),
+            .withMessage("tag inválida"),
         body('default_amount')
-            .toFloat()
             .notEmpty()
-            .withMessage("amount must be valid")
+            .withMessage("quantidade inválida")
     ],
     validateRequest,
 
