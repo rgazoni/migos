@@ -2,9 +2,9 @@ import { DatabaseConnection } from "../../common/models/DatabaseConnection";
 
 class BankApi extends DatabaseConnection{
 
-    public async get_statements(user_id: string){
+    public async get_statements(user_id: string, last_update: number){
 
-        const statements = await this.newQuery(`SELECT * FROM bank_api WHERE user_id = '${user_id}'`);
+        const statements = await this.newQuery(`SELECT * FROM bank_api WHERE user_id = '${user_id}' AND time > ${last_update} ORDER BY time DESC`);
 
         if(!statements.rows.length)
             return { results: [] };
@@ -17,8 +17,7 @@ class BankApi extends DatabaseConnection{
 
         const statements = await this.newQuery(`SELECT * FROM bank_api 
                                                WHERE user_id = '${user_id}' 
-                                               AND EXTRACT('Month' from time) = '${MM}'
-                                               AND TO_CHAR(time, 'YYYY') = '${YYYY}'`);
+                                               AND TO_CHAR(TO_TIMESTAMP(time / 1000), 'MM YYYY') = '${MM} ${YYYY}'`);
 
         if(!statements.rows.length)
             return { results: [] };

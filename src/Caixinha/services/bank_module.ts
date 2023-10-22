@@ -1,6 +1,7 @@
 import { BankApi } from "../models/BankApi";
 import { BankStatement } from "../models/BankStatement";
 import { Caixinhas } from "../models/Caixinhas";
+import { StatementsUpdate } from "../models/StatementsUpdate";
 import { UndefinedStatement } from "../models/UndefinedStatement";
 
 interface HashTable<T> {
@@ -17,11 +18,21 @@ export class BankModule {
         let bank = new BankApi();
 
         await bank.initialize();
-        const statements = await bank.get_month_statements(user_id, month.toString(), year); 
+        const statements = await bank.get_month_statements(user_id, month.toString(), year);
         bank.close();
 
         return statements.results;
+    }
 
+    static async fetch_statements(user_id: string, last_update_date: number){
+
+        let bank = new BankApi();
+
+        await bank.initialize();
+        const statements = await bank.get_statements(user_id, last_update_date);
+        bank.close();
+
+        return statements.results;
     }
 
     static async fetch_caixinha_tags(user_id: string){
@@ -31,19 +42,39 @@ export class BankModule {
         return tags;
     }
 
+    static async fetch_last_updated(user_id: string){
+        const update = new StatementsUpdate();
+        await update.initialize();
+        const last_update = await update.fetchLastUpdate(user_id);
+        return last_update;
+    }
+
+    static async store_timestamp_operation(user_id: string, timestamp_operation: number){
+        const update = new StatementsUpdate();
+        await update.initialize();
+        await update.store_timestamp_operation(user_id, timestamp_operation);
+    }
+
     static async match_statements(user_id: string){
 
-        //This could be later improved to make a more complex query looking also
-        //to undefined data and bank statements, in order to fetch from the bank api
-        //just the last transactions accordingly to time, that yet was not fetched.
+        const last_update : number = await BankModule.fetch_last_updated(user_id);
 
-        const [statements, tags] = await Promise.all([
-            BankModule.fetch_month_statements(user_id),
-            BankModule.fetch_caixinha_tags(user_id)
-        ]);
-    
-        // const statements : any[] = await BankModule.fetch_month_statements(user_id);
-        // const tags = await BankModule.fetch_caixinha_tags(user_id);
+        const timestamp_operation = Date.now();
+
+        let statements, tags;
+        if(!last_update) {
+            [statements, tags] = await Promise.all([
+                BankModule.fetch_month_statements(user_id),
+                BankModule.fetch_caixinha_tags(user_id)
+            ]);
+        } else {
+            [statements, tags] = await Promise.all([
+                BankModule.fetch_statements(user_id, last_update),
+                BankModule.fetch_caixinha_tags(user_id)
+            ]);
+        }
+
+        await BankModule.store_timestamp_operation(user_id, timestamp_operation)
 
         const hash_tags : HashTable<string> = {};
         tags.map( tag => { 
@@ -64,15 +95,18 @@ export class BankModule {
             }
         });
 
-        const bank_statement = new BankStatement();
-        await bank_statement.initialize();
-        await bank_statement.insert(bank_statements);
-        bank_statement.close();
-
-        const undefined_statement = new UndefinedStatement();
-        await undefined_statement.initialize();
-        await undefined_statement.insert(undefined_statements);
-        undefined_statement.close();
+        if (bank_statements.length != 0){
+            const bank_statement = new BankStatement();
+            await bank_statement.initialize();
+            await bank_statement.insert(bank_statements);
+            bank_statement.close();
+        }
+        if (undefined_statements.length != 0){
+            const undefined_statement = new UndefinedStatement();
+            await undefined_statement.initialize();
+            await undefined_statement.insert(undefined_statements);
+            undefined_statement.close();
+        }
 
         return true;
     }
