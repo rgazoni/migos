@@ -3,7 +3,7 @@ import { InternalServerError } from "../../common/errors/internal-server-error";
 
 class UndefinedStatement extends DatabaseConnection{
     
-    public async insert(statements_unrelated: Array<{transaction_id: string,  amount: number, title: string, user_id: string}>){
+    public async insert(statements_unrelated: Array<{transaction_id: string,  amount: number, tag: string, user_id: string}>){
         const timestamp = Date.now();
         let query = `INSERT INTO statements_unrelated (transaction_id, amount, time, title, user_id) VALUES`;
         let length = statements_unrelated.length;
@@ -14,7 +14,7 @@ class UndefinedStatement extends DatabaseConnection{
         }
 
         statements_unrelated.forEach(element => {
-            statement = `('${element.transaction_id}', '${element.amount}', '${timestamp}', '${element.title}', '${element.user_id}')`;
+            statement = `('${element.transaction_id}', '${element.amount}', '${timestamp}', '${element.tag}', '${element.user_id}')`;
             
             length = length - 1;
             if(length != 0){
