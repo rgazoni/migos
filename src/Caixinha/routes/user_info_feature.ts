@@ -10,26 +10,26 @@ router.get(
 
         const user_id = req.params.user_id;
 
-        // let state = '';
-        // try {
-        //     const result = await withTimeout(
-        //         BankModule.match_statements(user_id),
-        //         10000
-        //     );
-        //     state = 'updated';
-        //     console.log(result);
-        // } catch (error) {
-        //     state = 'not_updated';
-        //     console.error(error);
-        // }
+        let state = '';
+        try {
+            const result = await withTimeout(
+                BankModule.match_statements(user_id),
+                10000
+            );
+            state = 'updated';
+            console.log(result);
+        } catch (error) {
+            state = 'not_updated';
+            console.error(error);
+        }
 
-        const user_info = new CaixinhaInfos();
-        const all_info = await user_info.compute_caixinha_spends(user_id);
+        // const user_info = new CaixinhaInfos();
+        // const all_info = await user_info.compute_caixinha_spends(user_id);
 
         //Set state to updated or not_updated depending on bank statement call timeout
         res.status(200).send({
-            state: 'not_updated',
-            results: all_info
+            state: state,
+            //results: all_info
         });
 
     });
