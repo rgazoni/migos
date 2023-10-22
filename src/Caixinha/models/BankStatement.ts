@@ -3,7 +3,7 @@ import { DatabaseConnection } from "../../common/models/DatabaseConnection";
 
 
 class BankStatement extends DatabaseConnection{
-    public async insert(statements: Array<{ transaction_id: string, amount: number, title: string, user_id: string, caixinha_id: string }>){
+    public async insert(statements: Array<{ transaction_id: string, amount: number, tag: string, user_id: string, caixinha_id: string }>){
         let query = `INSERT INTO statements_related (transaction_id, amount, time, title, user_id, caixinha_id) VALUES `;
         let length = statements.length;
         let timestamp_str = Date.now();
@@ -15,7 +15,7 @@ class BankStatement extends DatabaseConnection{
         }
 
         statements.forEach(element => {
-            statement = `('${element.transaction_id}', '${element.amount}', '${timestamp}', '${element.title}', '${element.user_id}', '${element.caixinha_id}')`;
+            statement = `('${element.transaction_id}', '${element.amount}', '${timestamp}', '${element.tag}', '${element.user_id}', '${element.caixinha_id}')`;
             
             length = length - 1;
             if(length != 0){
