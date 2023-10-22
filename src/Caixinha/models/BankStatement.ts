@@ -37,7 +37,7 @@ class BankStatement extends DatabaseConnection{
 
     public async fetch_month_statements(user_id: string, MM: string, YYYY: number){
 
-        const statements = await this.newQuery(`SELECT * FROM statements_related 
+        const statements = await this.newQuery(`SELECT * FROM statements_related
                                                WHERE user_id = '${user_id}' 
                                                AND TO_CHAR(TO_TIMESTAMP(time / 1000), 'MM YYYY') = '${MM} ${YYYY}'`);
 

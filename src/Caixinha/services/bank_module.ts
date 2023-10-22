@@ -15,6 +15,8 @@ export class BankModule {
         const month = new Date().getMonth() + 1;
         const year = new Date().getFullYear();
 
+        console.log(month, year)
+
         let bank = new BankApi();
 
         await bank.initialize();
@@ -63,11 +65,13 @@ export class BankModule {
 
         let statements, tags;
         if(!last_update) {
+            console.log("BankModule.fetch_month_statements");
             [statements, tags] = await Promise.all([
                 BankModule.fetch_month_statements(user_id),
                 BankModule.fetch_caixinha_tags(user_id)
             ]);
         } else {
+            console.log("BankModule.fetch_statements");
             [statements, tags] = await Promise.all([
                 BankModule.fetch_statements(user_id, last_update),
                 BankModule.fetch_caixinha_tags(user_id)
@@ -83,12 +87,14 @@ export class BankModule {
             hash_tags[tag.tag] = tag.caixinha_id;
         });
 
+        console.log(statements, tags);
+
         const bank_statements: any[] = [];
         const undefined_statements: any[] = [];
 
         statements.forEach( (statement) => {
-            if (hash_tags[statement.title]) {
-                statement["caixinha_id"] = hash_tags[statement.title]; 
+            if (hash_tags[statement.tag]) {
+                statement["caixinha_id"] = hash_tags[statement.tag];
                 bank_statements.push(statement);
             } else {
                 undefined_statements.push(statement);
