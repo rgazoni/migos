@@ -1,16 +1,19 @@
 #For past records
-import uuid
 from random import randrange, choice
 from datetime import datetime
+from dotenv import load_dotenv
+import uuid
 import calendar
 import time
 import psycopg2
 import os
 
-host = os.environ['host']
-dbname = os.environ['dbname']
-user = os.environ['user']
-password = os.environ['password']
+load_dotenv()
+
+host = os.getenv('host')
+dbname = os.getenv('dbname')
+user = os.getenv('user')
+password = os.getenv('password')
 sslmode = "require"
 
 print("[" + datetime.today().strftime('%Y-%m-%d %H:%M:%S') + "] - " + "Proccess has been initialized")
@@ -31,7 +34,7 @@ users = [
     {
         "user_id": "75ecd8d2-4f44-4f24-b6f1-a4c0fcc82ecf",
         "name": "Japonês",
-        "tags": ["roupas", "jogos"]
+        "tags": ["roupas", "jogos", "games"]
     },
 ]
 
