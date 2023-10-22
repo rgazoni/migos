@@ -23,13 +23,13 @@ router.get(
             console.error(error);
         }
 
-        // const user_info = new CaixinhaInfos();
-        // const all_info = await user_info.compute_caixinha_spends(user_id);
+        const user_info = new CaixinhaInfos();
+        const all_info = await user_info.compute_caixinha_spends(user_id);
 
         //Set state to updated or not_updated depending on bank statement call timeout
         res.status(200).send({
             state: state,
-            //results: all_info
+            results: all_info
         });
 
     });
