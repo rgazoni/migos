@@ -3,6 +3,12 @@ import { DatabaseConnection } from "../../common/models/DatabaseConnection";
 import { BadRequestError } from "../../common/errors/bad-request-error";
 import { InternalServerError } from "../../common/errors/internal-server-error";
 
+export interface CaixinhasInformation {
+    caixinha_name: string;
+    tag: string;
+    default_amount: string;
+}
+
 class Caixinhas extends DatabaseConnection{
     public async createCaixinha(caixinha_name: string, tag: string, default_amount: number, user_id: string){
         const caixinha_ID = uuid();
@@ -24,7 +30,7 @@ class Caixinhas extends DatabaseConnection{
         if(allCaixinhas.rows.length > 0) {
             return allCaixinhas.rows;
         }else{
-            throw new InternalServerError('ID não encontrado'); 
+            throw new InternalServerError('Você não possui nenhuma caixinha cadastrada'); 
         }
     }
 
@@ -33,7 +39,7 @@ class Caixinhas extends DatabaseConnection{
         if(allCaixinhas.rows.length > 0) {
             return allCaixinhas.rows;
         }else{
-            throw new InternalServerError('ID não encontrado'); 
+            throw new InternalServerError('Nenhuma caixinha cadastrada'); 
         }
     }
 }
