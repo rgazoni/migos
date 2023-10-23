@@ -1,8 +1,7 @@
 import express, { Response, Request } from 'express';
-import { Caixinhas } from '../models/Caixinhas';
+import { Caixinhas, CaixinhasInformation } from '../models/Caixinhas';
 import { body } from 'express-validator';
 import { validateRequest } from '../../Auth/middlewares/validate-request';
-import { BankModule } from '../services/bank_module';
 
 const router = express.Router();
 
@@ -14,7 +13,16 @@ router.get(
     
         await caixinhas.initialize();
         const caixinhasData = await caixinhas.fetchUserCaixinhas(user_id);
-        res.status(200).json(caixinhasData); 
+
+        const caixinhasInformation : CaixinhasInformation[] = caixinhasData.map( caixinha => {
+            return {
+                caixinha_name : caixinha.caixinha_name,
+                tag : caixinha.tag,
+                default_amount : caixinha.default_amount
+             }
+        })
+
+        res.status(200).json(caixinhasInformation); 
     }
 );
 
