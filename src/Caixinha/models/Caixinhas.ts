@@ -7,6 +7,7 @@ export interface CaixinhasInformation {
     caixinha_name: string;
     tag: string;
     default_amount: string;
+    caixinha_id: string;
 }
 
 class Caixinhas extends DatabaseConnection{
