@@ -31,7 +31,7 @@ class Caixinhas extends DatabaseConnection{
         if(allCaixinhas.rows.length > 0) {
             return allCaixinhas.rows;
         }else{
-            throw new InternalServerError('ID não encontrado'); 
+            throw new InternalServerError('Você não possui nenhuma caixinha cadastrada'); 
         }
     }
 
@@ -40,7 +40,7 @@ class Caixinhas extends DatabaseConnection{
         if(allCaixinhas.rows.length > 0) {
             return allCaixinhas.rows;
         }else{
-            throw new InternalServerError('ID não encontrado'); 
+            throw new InternalServerError('Nenhuma caixinha cadastrada'); 
         }
     }
 }
