@@ -29,7 +29,7 @@ router.get(
              }
         })
 
-        res.status(200).json(allstatements); 
+        res.status(200).json({ results: allstatements }); 
     }
 );
 
