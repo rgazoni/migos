@@ -18,7 +18,8 @@ router.get(
             return {
                 caixinha_name : caixinha.caixinha_name,
                 tag : caixinha.tag,
-                default_amount : caixinha.default_amount
+                default_amount : caixinha.default_amount,
+                caixinha_id : caixinha.caixinha_id
              }
         })
 

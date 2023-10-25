@@ -23,7 +23,7 @@ interface CaixinhaOutput {
     caixinha_name: string;
     default_amount: number;
     total_amount: number;
-    relatedStatements: StatementsOutput[];
+    relatedStatements?: StatementsOutput[];
 }
 
 export class CaixinhaInfos{
@@ -82,7 +82,7 @@ export class CaixinhaInfos{
             const currentCaixinha : CaixinhaOutput = hash_tags[statement.title];
             if (currentCaixinha) {
                 currentCaixinha.total_amount += statement.amount;
-                currentCaixinha.relatedStatements.push({
+                currentCaixinha.relatedStatements!.push({
                     transaction_id: statement.transaction_id,
                     amount: statement.amount,
                     title: statement.title,
@@ -96,11 +96,16 @@ export class CaixinhaInfos{
                 const caixinha_content = hash_tags[key];
 
                 this.summary.total_income += caixinha_content.default_amount;
-                caixinha_content.relatedStatements.forEach( caixinha => {
+                caixinha_content.relatedStatements!.forEach( caixinha => {
                     this.summary.total_outcome += caixinha.amount;
                 });
 
-                this.summary.info_per_caixinha.push(caixinha_content)
+                this.summary.info_per_caixinha.push({
+                    tag: caixinha_content.tag,
+                    caixinha_name: caixinha_content.caixinha_name,
+                    default_amount: caixinha_content.default_amount,
+                    total_amount: caixinha_content.total_amount
+                })
             }
         }
 
