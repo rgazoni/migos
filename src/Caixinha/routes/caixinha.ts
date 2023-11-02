@@ -12,18 +12,18 @@ router.get(
     async (req: Request, res: Response) => {
         const user_id = req.params.user_id;
 
-        let state = '';
-        try {
-            const result = await withTimeout(
-                BankModule.match_statements(user_id),
-                30000
-            );
-            state = 'updated';
-            console.log(result);
-        } catch (error) {
-            state = 'not_updated';
-            console.error(error);
-        }
+        // let state = '';
+        // try {
+        //     const result = await withTimeout(
+        //         BankModule.match_statements(user_id),
+        //         30000
+        //     );
+        //     state = 'updated';
+        //     console.log(result);
+        // } catch (error) {
+        //     state = 'not_updated';
+        //     console.error(error);
+        // }
 
         const user_info = new CaixinhaInfos();
         const all_info = await user_info.compute_caixinha_spends(user_id);
@@ -34,14 +34,14 @@ router.get(
         });
     });
 
-function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
-    return Promise.race([
-        promise,
-        new Promise<T>((_, reject) =>
-            setTimeout(() => reject(console.log('Timeout')), timeoutMs)
-        )
-    ]);
-}
+// function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+//     return Promise.race([
+//         promise,
+//         new Promise<T>((_, reject) =>
+//             setTimeout(() => console.log('Timeout'), timeoutMs)
+//         )
+//     ]);
+// }
 
 router.post(
     '/api/users/caixinha',
