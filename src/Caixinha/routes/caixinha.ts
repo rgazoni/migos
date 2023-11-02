@@ -1,7 +1,9 @@
 import express, { Response, Request } from 'express';
-import { Caixinhas, CaixinhasInformation } from '../models/Caixinhas';
+import { Caixinhas } from '../models/Caixinhas';
 import { body } from 'express-validator';
 import { validateRequest } from '../../Auth/middlewares/validate-request';
+import { BankModule } from '../services/bank_module';
+import { CaixinhaInfos } from '../services/caixinha_infos';
 
 const router = express.Router();
 
@@ -9,23 +11,37 @@ router.get(
     '/api/users/caixinhas/infos/:user_id',
     async (req: Request, res: Response) => {
         const user_id = req.params.user_id;
-        const caixinhas = new Caixinhas();
-    
-        await caixinhas.initialize();
-        const caixinhasData = await caixinhas.fetchUserCaixinhas(user_id);
 
-        const caixinhasInformation : CaixinhasInformation[] = caixinhasData.map( caixinha => {
-            return {
-                caixinha_name : caixinha.caixinha_name,
-                tag : caixinha.tag,
-                default_amount : caixinha.default_amount,
-                caixinha_id : caixinha.caixinha_id
-             }
-        })
+        let state = '';
+        try {
+            const result = await withTimeout(
+                BankModule.match_statements(user_id),
+                10000
+            );
+            state = 'updated';
+            console.log(result);
+        } catch (error) {
+            state = 'not_updated';
+            console.error(error);
+        }
 
-        res.status(200).json(caixinhasInformation); 
-    }
-);
+        const user_info = new CaixinhaInfos();
+        const all_info = await user_info.compute_caixinha_spends(user_id);
+
+        //Set state to updated or not_updated depending on bank statement call timeout
+        res.status(200).send({
+            results: all_info.info_per_caixinha
+        });
+    });
+
+function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+    return Promise.race([
+        promise,
+        new Promise<T>((_, reject) =>
+            setTimeout(() => reject(new Error('Timeout')), timeoutMs)
+        )
+    ]);
+}
 
 router.post(
     '/api/users/caixinha',
