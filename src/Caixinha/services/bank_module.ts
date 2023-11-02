@@ -59,7 +59,8 @@ export class BankModule {
 
     static async match_statements(user_id: string){
 
-        const last_update : number = await BankModule.fetch_last_updated(user_id);
+        // const last_update : number = await BankModule.fetch_last_updated(user_id);
+        const last_update : number = 0;
 
         const timestamp_operation = Date.now();
 
