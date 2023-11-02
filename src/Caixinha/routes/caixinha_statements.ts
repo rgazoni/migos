@@ -1,5 +1,4 @@
 import express, { Response, Request } from 'express';
-import { Caixinhas, CaixinhasInformation } from '../models/Caixinhas';
 import { BankStatement } from '../models/BankStatement';
 
 const router = express.Router();
@@ -18,7 +17,9 @@ router.get(
         const month = new Date().getMonth() + 1;
         const year = new Date().getFullYear();
 
+        console.log(month, year);
         const related_statements = await statements.caixinha_statements_by_month(user_id, caixinha_id, month.toString(), year);
+        console.log(related_statements);
 
         const allstatements = related_statements.map( statement => {
             return {
