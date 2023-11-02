@@ -16,7 +16,7 @@ router.get(
         try {
             const result = await withTimeout(
                 BankModule.match_statements(user_id),
-                10000
+                30000
             );
             state = 'updated';
             console.log(result);
@@ -38,7 +38,7 @@ function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
     return Promise.race([
         promise,
         new Promise<T>((_, reject) =>
-            setTimeout(() => reject(new Error('Timeout')), timeoutMs)
+            setTimeout(() => reject(console.log('Timeout')), timeoutMs)
         )
     ]);
 }
