@@ -20,6 +20,7 @@ interface StatementsOutput {
 
 interface CaixinhaOutput {
     tag: string;
+    caixinha_id: string;
     caixinha_name: string;
     default_amount: number;
     total_amount: number;
@@ -71,6 +72,7 @@ export class CaixinhaInfos{
             if (!hash_tags[caixinha.tag]) {
                 hash_tags[caixinha.tag] = {
                     tag: caixinha.tag,
+                    caixinha_id: caixinha.caixinha_id,
                     caixinha_name: caixinha.caixinha_name,
                     default_amount: caixinha.default_amount,
                     total_amount: 0,
@@ -105,6 +107,7 @@ export class CaixinhaInfos{
 
                 this.summary.info_per_caixinha.push({
                     tag: caixinha_content.tag,
+                    caixinha_id: caixinha_content.caixinha_id,
                     caixinha_name: caixinha_content.caixinha_name,
                     default_amount: caixinha_content.default_amount,
                     total_left: caixinha_content.total_left,
