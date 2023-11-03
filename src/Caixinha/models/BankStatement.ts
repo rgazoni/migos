@@ -1,7 +1,6 @@
 import { InternalServerError } from "../../common/errors/internal-server-error";
 import { DatabaseConnection } from "../../common/models/DatabaseConnection";
 
-
 class BankStatement extends DatabaseConnection{
     public async insert(statements: Array<{ transaction_id: string, amount: number, tag: string, user_id: string, caixinha_id: string }>){
         let query = `INSERT INTO statements_related (transaction_id, amount, time, title, user_id, caixinha_id) VALUES `;
@@ -45,6 +44,18 @@ class BankStatement extends DatabaseConnection{
             return { results: [] };
 
         return { results: statements.rows };
+    }
+
+    public async caixinha_statements_by_month(user_id: string, caixinha_id: string, MM: string, YYYY: number){
+
+        const statements = await this.newQuery(`SELECT * FROM statements_related
+                                               WHERE user_id = '${user_id}'
+                                               AND caixinha_id = '${caixinha_id}'
+                                               AND TO_CHAR(TO_TIMESTAMP(time / 1000), 'MM YYYY') = '${MM} ${YYYY}'`);
+        if(!statements.rows.length)
+            return [];
+
+        return statements.rows;
     }
 }
 

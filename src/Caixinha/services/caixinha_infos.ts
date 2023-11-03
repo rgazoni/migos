@@ -20,10 +20,12 @@ interface StatementsOutput {
 
 interface CaixinhaOutput {
     tag: string;
+    caixinha_id: string;
     caixinha_name: string;
     default_amount: number;
     total_amount: number;
-    relatedStatements: StatementsOutput[];
+    total_left: number;
+    relatedStatements?: StatementsOutput[];
 }
 
 export class CaixinhaInfos{
@@ -70,9 +72,11 @@ export class CaixinhaInfos{
             if (!hash_tags[caixinha.tag]) {
                 hash_tags[caixinha.tag] = {
                     tag: caixinha.tag,
+                    caixinha_id: caixinha.caixinha_id,
                     caixinha_name: caixinha.caixinha_name,
                     default_amount: caixinha.default_amount,
                     total_amount: 0,
+                    total_left: caixinha.default_amount,
                     relatedStatements: []
                 };
             }
@@ -82,7 +86,8 @@ export class CaixinhaInfos{
             const currentCaixinha : CaixinhaOutput = hash_tags[statement.title];
             if (currentCaixinha) {
                 currentCaixinha.total_amount += statement.amount;
-                currentCaixinha.relatedStatements.push({
+                currentCaixinha.total_left -= statement.amount;
+                currentCaixinha.relatedStatements!.push({
                     transaction_id: statement.transaction_id,
                     amount: statement.amount,
                     title: statement.title,
@@ -96,11 +101,18 @@ export class CaixinhaInfos{
                 const caixinha_content = hash_tags[key];
 
                 this.summary.total_income += caixinha_content.default_amount;
-                caixinha_content.relatedStatements.forEach( caixinha => {
+                caixinha_content.relatedStatements!.forEach( caixinha => {
                     this.summary.total_outcome += caixinha.amount;
                 });
 
-                this.summary.info_per_caixinha.push(caixinha_content)
+                this.summary.info_per_caixinha.push({
+                    tag: caixinha_content.tag,
+                    caixinha_id: caixinha_content.caixinha_id,
+                    caixinha_name: caixinha_content.caixinha_name,
+                    default_amount: caixinha_content.default_amount,
+                    total_left: caixinha_content.total_left,
+                    total_amount: caixinha_content.total_amount
+                })
             }
         }
 
