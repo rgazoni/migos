@@ -11,6 +11,7 @@ import { NotFoundError } from './common/errors/not-found-error';
 import { UndefinedStatementRouter } from "./Caixinha/routes/undefined_statement";
 import { userInfoRouter } from "./Caixinha/routes/user_info_feature";
 import { caixinhaStatementsRouter } from "./Caixinha/routes/caixinha_statements";
+import { notificationsRouter } from "./Notifications/routes/notifications"
 
 const app = express();
 
@@ -24,7 +25,7 @@ app.use(caixinhaRouter);
 app.use(UndefinedStatementRouter);
 app.use(userInfoRouter);
 app.use(caixinhaStatementsRouter);
-
+app.use(notificationsRouter);
 
 //We have installed a library to workaround the default pattern that
 //JS deals with throw and async communication
