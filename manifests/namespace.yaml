@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: default-1696776253192
+  name: migos-prod-namespace
 spec:
   finalizers:
     - kubernetes
